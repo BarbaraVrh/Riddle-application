@@ -8,7 +8,7 @@ from flask_navigation import Navigation
 
 app = Flask(__name__)
 
-app.secret_key = secrets.token_hex(16)
+app.secret_key = 'yoursecretkey'
 
 riddles = [
     {
