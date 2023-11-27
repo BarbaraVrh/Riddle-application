@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Question {{count}}</title>
+</head>
+<body>
+    {% if count%4!=0 or count==4 %}
+    <h1>Question {{count}}</h1>
+
+        <p>{{ riddle.question }}</p>
+
+        <form action="/question" method="POST">
+            <input type="hidden" id = "riddle_id" name="riddle_id" value="{{ riddle.index }}">
+
+            {% for answer in riddle.answers %}
+                <label for="{{ answer }}">{{ answer }}</label>
+                <input type="radio" id="{{ answer }}" name="answer" value="{{ answer }}">
+            {% endfor %}
+            <input type="submit" value="Submit answer">
+        </form>
+
+        {% if feedback %}
+            <p>{{ feedback }}</p>
+            {% if answer==correct_answer %}
+            <form action="/question" method="GET">
+                <input type="submit" value="Next question">
+            </form>
+            {% endif %}
+        {% endif %}
+    {% else %}
+    <form action ="/end" method ="GET">
+        <p> Thank you for playing the riddle game!</p>
+    </form>
+    {% endif %}
+
+
+</body>
+</html>
+
