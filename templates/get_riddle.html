@@ -1,39 +1,43 @@
-<!DOCTYPE html>
-<html>
-<head>
-    <title>Question {{count}}</title>
-</head>
-<body>
-    {% if count%4!=0 or count==4 %}
-    <h1>Question {{count}}</h1>
 
-        <p>{{ riddle.question }}</p>
-
-        <form action="/question" method="POST">
-            <input type="hidden" id = "riddle_id" name="riddle_id" value="{{ riddle.index }}">
-
-            {% for answer in riddle.answers %}
-                <label for="{{ answer }}">{{ answer }}</label>
-                <input type="radio" id="{{ answer }}" name="answer" value="{{ answer }}">
-            {% endfor %}
-            <input type="submit" value="Submit answer">
-        </form>
-
-        {% if feedback %}
-            <p>{{ feedback }}</p>
-            {% if answer==correct_answer %}
-            <form action="/question" method="GET">
-                <input type="submit" value="Next question">
+    <!DOCTYPE html>
+    <head>
+        <meta charset="UTF-8">
+        <link rel="stylesheet" href="{{ url_for('static', filename= 'css/sphinx.css') }}">
+        <title>Question</title>
+    </head>
+    <body>
+        <div class="content">
+            {% if count < 4 %}
+            {% set count = count+1 %}
+            <h1>Question {{ count }}</h1>
+            <p>{{ question }}</p>
+            <form action="/question" method="POST">
+                <input type="hidden" id = "riddle_id" name="riddle_id" value="{{ riddle.index }}">
+    
+                {% for answer in riddle.answers %}
+                    <label for="{{ answer }}">{{ answer }}</label>
+                    <input type="radio" id="{{ answer }}" name="answer" value="{{ answer }}"
+                    {% if answer == default_answer or (feedback and answer == selected_answer) %}checked{% endif %} >
+                {% endfor %}
+    
+                {% if feedback != "Congratulations! You got the answer right!" %}
+                <input type="submit" value="Submit answer">
+                {% endif %}
             </form>
+    
+            {% if feedback %}
+                <p>{{ feedback }}</p>
+                {% set selected_answer = request.form.get('answer') %}
+                {% if feedback=="Congratulations! You got the answer right!" %}
+                <form action="/question" method="GET">
+                    <input type="submit" value="Next question">
+                </form>
+                {% endif %}
             {% endif %}
-        {% endif %}
-    {% else %}
-    <form action ="/end" method ="GET">
-        <p> Thank you for playing the riddle game!</p>
-    </form>
-    {% endif %}
+            {% else %}
+            {% endif %}
 
-
-</body>
+        </div>
+    </body>
 </html>
 
