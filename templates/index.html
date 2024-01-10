@@ -1,20 +1,25 @@
 <!DOCTYPE html>
-<html>
 <head>
-    <title>Riddle Game</title>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ url_for('static', filename= 'css/sphinx.css') }}">
+    <title>Riddles of the Sphinx</title>
 </head>
 <body>
-    <h1>Riddle Game</h1>
+    <h1>Riddle of the Sphinx</h1>
 
-    <form action="/" method="GET">
-        <label for="user_name">Enter your name:</label>
-        <input type="text" id="user_name" name="user_name">
-        <input type ="hidden" value = "Enter">
+    <form action="/submit_name" method="POST">
         {% if user_name %}
             <p>Welcome, {{ user_name }}! This is a riddle game consisting of four questions. You are allowed multiple tries and need to answer correctly to proceed to the next question. Click start to proceed to the first question.</p>
+        {% else %}
+            <label for="user_name">Enter your name:</label>
+            <input type="text" id="user_name" name="User_Name">
+            <input type ="hidden" value = "Enter">
+        {% endif %}
     </form>
+    
     <form action="/question" method="GET">
-        <input type="submit" value="Start">
+        {% if user_name %}
+            <input type="submit" value="Start">
         {% endif %}
     </form>
 
